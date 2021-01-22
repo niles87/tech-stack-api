@@ -29,6 +29,10 @@ class Stock(db.Model):
         return '<Stock %r' % self.name
 
 
+def close_db():
+    pass
+
+
 def init_db():
     db.create_all()
 
@@ -41,4 +45,5 @@ def init_db_command():
 
 
 def init_app(app):
+    app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
