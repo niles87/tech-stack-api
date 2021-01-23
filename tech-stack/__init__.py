@@ -16,11 +16,12 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    from .extentions import db, ma
+    db.init_app(app)
+    ma.init_app(app)
+
     @app.route("/hello")
     def hello():
         return 'Hello world'
-
-    from . import db
-    db.init_app(app)
 
     return app

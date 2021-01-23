@@ -1,11 +1,6 @@
-from enum import unique
 from flask_sqlalchemy import SQLAlchemy
-import click
-from flask import current_app, g
-from flask.cli import cli, with_appcontext
-
-
-db = SQLAlchemy(current_app)
+from flask_marshmallow import Marshmallow
+from .extentions import db, ma
 
 
 class User(db.Model):
@@ -25,25 +20,22 @@ class Stock(db.Model):
     available_stock = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(255), nullable=False)
 
-    def __repr__(self) -> str:
-        return '<Stock %r' % self.name
+    def __init__(self, name, price, qty, description):
+        self.name = name
+        self.price = price
+        self.available_stock = qty
+        self.description = description
 
 
-def close_db():
-    pass
+class StockSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name', 'price', 'available_stock', 'description')
 
 
-def init_db():
-    db.create_all()
+class UserSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name', 'email')
 
 
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    init_db()
-    click.echo("Initialized the db")
-
-
-def init_app(app):
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
+stock_schema = StockSchema(many=True, strict=True)
+user_schema = UserSchema(strict=True)
