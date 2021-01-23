@@ -4,8 +4,10 @@ import os
 class Config(object):
     DEBUG = True
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
-    
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + \
+        os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                     os.environ.get("DATABASE_URL"))
+
 
 class ProductionConfig(Config):
     DEBUG = False
