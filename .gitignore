@@ -19,7 +19,8 @@ docs/_build/
 venv/
 __pycache__
 instance/
-
+# dev database
+*.sqlite
 # Coverage reports
 htmlcov/
 .coverage
