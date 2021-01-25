@@ -64,7 +64,7 @@ def stock():
     elif request.method == 'GET':
         all_stock = Stock.query.all()
         result = stock_schema.dump(all_stock)
-        return jsonify(result)
+        return jsonify({"results": result})
 
 
 @app.route('/auth/register', methods=['POST'])
